@@ -13,4 +13,4 @@ Project is created with:
 ## Setup
 Just download this project and open `index.html` in your browser.
 
-font: 'https://youtu.be/DfSYmk_6vk8'
+font: 'https://github.com/lucybrandao/double-range-slider-js'
