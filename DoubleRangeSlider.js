@@ -2,13 +2,19 @@ class DoubleRangeSlider extends HTMLElement {
     constructor() {
         super()
 
-        this.slider1 = 0
-        this.slider2 = 100
+        this.slider1 = null
+        this.slider2 = null
         this.range1 = null
         this.range2 = null
-        this.minGap = 0
+        this.minGap = 3
         this.sliderMaxValue = null
         this.track = null
+
+        this.startValue1 = 30
+        this.startValue2 = 70
+
+        this.currentValue1 = this.startValue1
+        this.currentValue2 = this.startValue2
 
         this.build()
     }
@@ -40,14 +46,14 @@ class DoubleRangeSlider extends HTMLElement {
 
         this.range1 = document.createElement('span');
         this.range1.setAttribute('id', 'value1')
-        this.range1.textContent = this.slider1.getAttribute('value')
+        this.range1.textContent = ' 0 '
 
         const valueseparator = document.createElement('span');
         valueseparator.innerHTML = ' &dash; '
 
         this.range2 = document.createElement('span');
         this.range2.setAttribute('id', 'value2')
-        this.range2.textContent = this.slider2.getAttribute('value')
+        this.range2.textContent = ' 100 '
 
         values.appendChild(this.range1)
         values.appendChild(valueseparator)
@@ -68,19 +74,18 @@ class DoubleRangeSlider extends HTMLElement {
         this.slider1.setAttribute('type', 'range')
         this.slider1.setAttribute('min', 0)
         this.slider1.setAttribute('max', 100)
-        this.slider1.setAttribute('value', 30)
-        // this.slider1.innerHTML = this.slider1.getAttribute('value')
+        this.slider1.setAttribute('value', this.currentValue1)
 
         this.slider2 = document.createElement('input');
         this.slider2.setAttribute('id', 'slider-2')
         this.slider2.setAttribute('type', 'range')
         this.slider2.setAttribute('min', 0)
         this.slider2.setAttribute('max', 100)
-        this.slider2.setAttribute('value', 70)
-        // this.slider2.innerHTML = this.slider2.getAttribute('value')
+        this.slider2.setAttribute('value', this.currentValue2)
 
         this.slider1.addEventListener('input', this.slideOne.bind(this))
         this.slider2.addEventListener('input', this.slideTwo.bind(this))
+        this.fillColor();
 
         sliders.appendChild(this.track)
         sliders.appendChild(this.slider1)
@@ -89,40 +94,40 @@ class DoubleRangeSlider extends HTMLElement {
         return sliders
     }
 
-    slideOne() {
-        let sliderOne = this.slider1.getAttribute('value')
-        let sliderTwo = this.slider2.getAttribute('value')
+    slideOne(event) {
         let displayValOne = this.range1;
 
-        if(parseInt(sliderTwo.value) - parseInt(sliderOne.value) <= this.minGap) {
-            sliderOne.value = parseInt(sliderTwo.value) - this.minGap;
+        if(parseInt(this.currentValue2) - parseInt(event.target.value) <= this.minGap) {
+            event.target.value = parseInt(this.currentValue2) - this.minGap
+            return
         }
-        displayValOne.textContent = sliderOne.value;
+        displayValOne.textContent = event.target.value;
+        this.currentValue1 = event.target.value;
 
         this.fillColor();
     }
 
-    slideTwo() {
-        let sliderOne = this.slider1.getAttribute('value')
-        let sliderTwo = this.slider2.getAttribute('value')
+    slideTwo(event) {
         let displayValTwo = this.range2;
 
-        if(parseInt(sliderTwo.value) - parseInt(sliderOne.value) <= this.minGap) {
-            sliderTwo.value = parseInt(sliderOne.value) + this.minGap;
+        if(parseInt(event.target.value) - parseInt(this.currentValue1) <= this.minGap) {
+            event.target.value = parseInt(this.currentValue1) + this.minGap
+            return
         }
-        displayValTwo.textContent = sliderTwo.value;
+        displayValTwo.textContent = event.target.value;
+        this.currentValue2 = event.target.value;
+
+        console.log(event.target.value, this.currentValue1, this.currentValue2)
 
         this.fillColor();
     }
 
     fillColor() {
-        let sliderOne = this.slider1.getAttribute('value')
-        let sliderTwo = this.slider2.getAttribute('value')
         let sliderMaxValue = this.slider1.getAttribute('max')
         let sliderTrack = this.track
 
-        const percent1 = (sliderOne.value/ sliderMaxValue) * 100;
-        const percent2 = (sliderTwo.value / sliderMaxValue) * 100;
+        const percent1 = (this.currentValue1/ sliderMaxValue) * 100;
+        const percent2 = (this.currentValue2 / sliderMaxValue) * 100;
         sliderTrack.style.background = `linear-gradient(
             to right,
             #dadae5 ${percent1}%,
@@ -255,3 +260,45 @@ class DoubleRangeSlider extends HTMLElement {
 }
 
 customElements.define('double-range-slider', DoubleRangeSlider);
+
+// window.onload = function() {
+//     slideOne();
+//     slideTwo();
+// }
+
+// let sliderOne = document.getElementById('slider-1');
+// let sliderTwo = document.getElementById('slider-2');
+// let displayValOne = document.getElementById('range1');
+// let displayValTwo = document.getElementById('range2');
+// let minGap = 0;
+// let sliderTrack = document.querySelector('.slider-track');
+// let sliderMaxValue = document.getElementById('slider-1').max;
+
+
+// function slideOne() {
+//     if(parseInt(sliderTwo.value) - parseInt(sliderOne.value) <= minGap) {
+//         sliderOne.value = parseInt(sliderTwo.value) - minGap;
+//     }
+//     displayValOne.textContent = sliderOne.value;
+//     fillColor();
+// }
+
+// function slideTwo() {
+//     if(parseInt(sliderTwo.value) - parseInt(sliderOne.value) <= minGap) {
+//         sliderTwo.value = parseInt(sliderOne.value) + minGap;
+//     }
+//     displayValTwo.textContent = sliderTwo.value;
+//     fillColor();
+// }
+
+// function fillColor() {
+//     percent1 = (sliderOne.value/ sliderMaxValue) * 100;
+//     percent2 = (sliderTwo.value / sliderMaxValue) * 100;
+//     sliderTrack.style.background = `linear-gradient(
+//         to right,
+//         #dadae5 ${percent1}%,
+//         #8a2be2 ${percent1}%,
+//         #8a2be2 ${percent2}%,
+//         #dadae5 ${percent2}%
+//     )`;
+// }
