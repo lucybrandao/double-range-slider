@@ -1,6 +1,6 @@
 # double-range-slider
 
-<!-- ![My double-range-slider](./double-range-slider-example.jpeg) -->
+![My double-range-slider](./double-range-slider-example.jpeg)
 
 ## General info
 My first webcomponent, created all by myself! :D
