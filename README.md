@@ -1,4 +1,4 @@
-# double-range-slider
+# double-range-slider (:us:)
 
 ![My double-range-slider](./double-range-slider-example.jpeg)
 
@@ -13,4 +13,5 @@ Project is created with:
 ## Setup
 Just download this project and open `index.html` in your browser.
 
-font: 'https://github.com/lucybrandao/double-range-slider-js'
+## Font
+- [lucybrandao / double-range-slider-js](https://github.com/lucybrandao/double-range-slider-js)
