@@ -2,6 +2,10 @@
 
 ![My double-range-slider](./double-range-slider-example.jpeg)
 
+```html
+<double-range-slider />
+```
+
 ## General info
 My first webcomponent, created all by myself! :D
 
